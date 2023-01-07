@@ -1,0 +1,82 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+:root {
+    font-size: 100%;
+    --green: rgb(191, 236, 191);
+    --pink: blanchedalmond;
+}
+li {
+    list-style: none;
+    font-size: 120%;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    color: #555;
+    margin-bottom: 15em;
+}
+
+h1, h3{
+    text-align: center;
+    padding: 1em;
+}
+h3 {
+    color: red; 
+}
+.tasks, .completed {
+    max-width: 80%;
+    width: fit-content;
+    height: auto;
+    margin: 0 auto;
+    display: flex;
+    justify-content:center;
+    gap: 5em;
+    background-color: blanchedalmond;
+    padding: 2em 4em;
+    flex-flow: row wrap
+    
+   
+}
+.tasks, .completed li {
+    white-space:nowrap;
+}
+
+.completed {
+    background-color: var(--green);
+}
+
+
+
+ul li img {
+    width: 1.3em;
+    height: auto;
+    padding-left: 0.5em;
+}
+
+.button-container {
+    display: block;
+    margin: 0 auto;
+    width: 40%;
+    text-align: center;
+}
+
+input {
+    width: 100%;
+    padding: 8px;
+    border-radius: 3px;
+    border: 1px solid var(--green);
+}
+
+input[type="submit"], button {
+    background-color: var(--green);
+    border: none;
+    width: fit-content;
+    padding: 1em 5em;
+    margin-top: 1em;
+}
+
+input[type="submit"]:hover, button:hover {
+    background-color: var(--pink);
+}

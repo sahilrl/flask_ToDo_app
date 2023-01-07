@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>Add Tasks</h1>
+    <div class="button-container">
+        <form method="POST">
+            <input type="text" name="task" placeholder="New Item in the TODO list">
+            <input type="submit" value="Add task">
+        </form>
+        <button onclick="reset()">RESET</button>
+    </div>
+
+    <h1>Your current pending tasks</h1>
+    {% if errors %}
+    {% for error in errors %}
+    <h3>{{error}}</h3>
+    {% endfor %}
+    {% endif %}
+
+    <ul class="tasks">
+        {% for task in tasks['task'] %}
+        <li>{{ task }}<img src="{{ url_for('static', filename='img/check.png')}}" onclick="mark_task(this)"><img
+                src="{{ url_for('static', filename='img/trash.png')}}" onclick="deletetask(this)"></li>
+        {% endfor %}
+    </ul>
+    <h1>Completed Tasks</h1>
+    <ul class="completed">
+        {% for task in tasks['completed'] %}
+        <li>{{ task }}<img src="{{ url_for('static', filename='img/trash.png')}}" onclick="deletetask(this)"></li>
+        {% endfor %}
+    </ul>
+
+
+    <script>
+
+        function mark_task(element) {
+            var completedlist = document.querySelector('.completed')
+            var li = document.createElement('li')
+            li.innerText = element.parentNode.innerText
+            var img = document.createElement('img')
+            img.setAttribute("src", "{{ url_for('static', filename='img/trash.png')}}")
+            img.setAttribute("onclick", "deletetask(this)")
+            li.appendChild(img)
+            completedlist.appendChild(li)
+
+            element.parentNode.remove()
+
+            fetch('{{ url_for("markcomplete")}}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(element.parentNode.innerText),
+            })
+        };
+
+        function deletetask(element) {
+            console.log('delete executed')
+            element.parentNode.remove()
+            fetch('{{ url_for("removetask")}}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(element.parentNode.innerText),
+            })
+        };
+
+        function reset() {
+            var tasklist = document.querySelector('.tasks')
+            var completelist = document.querySelector('.completed')
+            tasklist.innerHTML = ""
+            completelist.innerHTML = ""
+            fetch('{{ url_for("reset")}}', {
+                method: 'POST',
+            })
+        }
+
+    </script>
+
+
+</body>
+
+</html>
